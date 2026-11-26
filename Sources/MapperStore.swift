@@ -65,7 +65,7 @@ final class MapperStore: ObservableObject {
         if let activationObserver {
             NSWorkspace.shared.notificationCenter.removeObserver(activationObserver)
         }
-        engine.stop()
+        engine.shutdown()
     }
 
     func updateProfile(_ profile: AppProfile) {

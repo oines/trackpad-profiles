@@ -4,6 +4,15 @@ set -euo pipefail
 cd "$(dirname "$0")"
 arch="$(uname -m)"
 app="build/Trackpad Profiles.app"
+signing_identity="${TRACKPAD_PROFILES_SIGN_IDENTITY:-}"
+
+if [[ -z "$signing_identity" && -f .signing-identity ]]; then
+    signing_identity="$(< .signing-identity)"
+    if [[ -z "$signing_identity" ]]; then
+        printf '%s\n' '.signing-identity must contain a code-signing identity.' >&2
+        exit 1
+    fi
+fi
 
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 
@@ -20,7 +29,7 @@ xcrun --sdk macosx swiftc \
 
 cp Info.plist "$app/Contents/Info.plist"
 cp LICENSE.txt "$app/Contents/Resources/LICENSE.txt"
-codesign --force --sign - "$app"
+codesign --force --sign "${signing_identity:--}" --timestamp=none "$app"
 codesign --verify --strict "$app"
 
 printf '%s\n' "$PWD/$app"

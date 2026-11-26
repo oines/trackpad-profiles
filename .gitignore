@@ -1,2 +1,3 @@
 /build/
+/.signing-identity
 .DS_Store

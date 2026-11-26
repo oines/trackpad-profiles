@@ -10,7 +10,9 @@
 ./build.sh
 ```
 
-脚本会为当前 Mac 的架构构建 `build/Trackpad Profiles.app`，并为它做本地临时签名。读取触点依赖 macOS 的私有 MultitouchSupport 框架，升级系统后可能需要重新验证。
+脚本会为当前 Mac 的架构构建 `build/Trackpad Profiles.app`，默认使用临时签名。若要在本地升级时沿用辅助功能授权，可以将钥匙串中的 Apple Development 签名身份名称或指纹写入项目根目录的 `.signing-identity`，并在后续构建中使用同一身份。也可以通过 `TRACKPAD_PROFILES_SIGN_IDENTITY` 指定签名。从临时签名换到证书签名后需要重新授权一次。 [Apple 代码签名要求](https://developer.apple.com/documentation/technotes/tn3127-inside-code-signing-requirements)
+
+读取触点依赖 macOS 的私有 MultitouchSupport 框架，升级系统后可能需要重新验证。
 
 ## 使用
 
